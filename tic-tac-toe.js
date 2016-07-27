@@ -7,25 +7,31 @@
 // p.name
 // // Mary
 //
-var Player = undefined; /* TODO replace undefined with class definition */
+var Player = function(name){
+  this.name = name;
+}; /* TODO replace undefined with class definition */
 
 // TicTacToe class is the main class of the game. The constructor should take
 // two arguments, the two names of the players.
-var TicTacToe = function (/* TODO fill in arguments */) {
-  this.player1 = new Player(/* TODO */);
-  this.player2 = new Player(/* TODO */);
+var TicTacToe = function (player1, player2/* TODO fill in arguments */) {
+  this.player1 = new Player(player1);
+  this.player2 = new Player(player2);
 
   this.reset();
 };
 
+
 // TODO
 // Reset the game with a new board and player 1 as the current player.
 TicTacToe.prototype.reset = function () {
+  this.board = new Board();
+  // this.switchCurrentPlayer(player1);
+  this.currentPlayer = this.player1
 }
 
 // Now, verify that you can create an instance of TicTacToe:
 //
-// game = new TicTacToe("John", "Mary");
+// var game = new TicTacToe("John", "Mary");
 // game.player1.name
 // // John
 // game.player2.name
@@ -49,7 +55,14 @@ TicTacToe.prototype.reset = function () {
 // TODO
 // Print the board and the current player's name.
 TicTacToe.prototype.print = function () {
-}
+  for(var i= 0; i<this.board.board.length; i++){
+    // for(var j=0; j<this.board.board[i].length; j++){
+      console.log(this.board.board[i])
+    }
+    console.log("it's " +this.currentPlayer.name +"'s"+ " Turn!")
+  }
+  // console.log();
+  // console.log(currentPlayer);
 
 // game = new TicTacToe("John", "Mary");
 // game.print()
@@ -62,6 +75,12 @@ TicTacToe.prototype.print = function () {
 // TODO
 // Switch this.currentPlayer to the other player.
 TicTacToe.prototype.switchCurrentPlayer = function () {
+  if (this.currentPlayer === this.player1){
+    this.currentPlayer = this.player2
+  } else {
+    this.currentPlayer = this.player1
+  }
+
 }
 
 // game = new TicTacToe("John", "Mary");
@@ -83,6 +102,11 @@ TicTacToe.prototype.switchCurrentPlayer = function () {
 // TODO
 // Should return "X" if the current turn is player 1's. Return "O" otherwise.
 TicTacToe.prototype.currentChar = function () {
+  if(this.currentPlayer === this.player1){
+    return 'X';
+  } else {
+    return 'O';
+  }
 }
 
 // game = new TicTacToe("John", "Mary");
@@ -107,6 +131,24 @@ TicTacToe.prototype.currentChar = function () {
 // If the game is now tied, print this out.
 //
 TicTacToe.prototype.play = function (position) {
+    // for(var j=0; j<this.board.board[i].length; j++){
+  if (this.board.winner() === undefined){
+
+  this.board.play(this.currentChar(), position);
+  if(this.board.winner() === 'X'){
+    console.log('Winner is '+ this.player1.name)
+  }
+  else if(this.board.winner() === 'O'){
+    console.log('Winner is '+ this.player2.name)
+  }
+  else{
+
+  this.switchCurrentPlayer();
+  this.print();
+  }
+  } else {
+    console.log('Game is Over!!!');
+  }
 
   // TODO, using the functions you implemented above:
   // - Check if the game is over. Return if it is.
@@ -114,7 +156,8 @@ TicTacToe.prototype.play = function (position) {
   // - Check for a winner after position is played.
   // - Switch the current player to the next one.
   // - Print the state of the board and next person's turn.
-}
+  }
+
 
 // You should now be able to play the game. Congrats, you're done! (But you may
 // have some bugs in the edge-cases. Seek them out).
